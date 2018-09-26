@@ -1,4 +1,3 @@
 # Receipt VAT Calculator
-This is a calculator for the vat of the receipt amount
-
-I've had issues with calculating the VAT, VAT Sale, VAT Exempt Sale, and Discount of a receipt. And so I was motivated to make one.
+This is a calculator for getting the VAT, VAT Sale, VAT Exempt Sale, and Discount of a receipt.
+I've had issues with calculating it and so I was motivated to make a calculator for it.
