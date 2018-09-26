@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+</head>
+<body>
+  <div id="app" class="container">
+    <br />
+    <h4 class="title">Receipt VAT Calculator</h4>
+    <div class="columns">
+      <div class="column">
+        <h5 class="subtitle">Receipt</h5>
+        <form action="">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label for="" class="label">No. of Pax</label>
+                <div class="control"><input type="number" name="" id="" class="input has-text-right" v-model="noOfPax" min=1></div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label for="" class="label">No. of Senior</label>
+                <div class="control"><input type="number" name="" id="" class="input has-text-right" v-model="noOfSenior" :max="noOfPax" min="0"></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="totalSale" class="label">Total Sale</label>
+            <div class="control">
+              <input class="input has-text-right" type="number" name="totalSale" v-model="totalSale">
+            </div>
+          </div>
+          <div class="field">
+            <label for="" class="label">VAT Sale</label>
+            <h5 class="subtitle is-5">{{vatSale.toFixed(2)}}</h5>
+          </div>
+          <div class="field">
+            <div class="label">VAT Amount</div>
+            <h5 class="subtitle is-5">{{vatAmount.toFixed(2)}}</h5>
+          </div>
+          <div class="field">
+            <label for="" class="label">VAT Exempt Sale</label>
+            <h5 class="subtitle is-5">{{vatExemptSale.toFixed(2)}}</h5>
+          </div>
+          <div class="field">
+            <label for="" class="label">Discount</label>
+            <h5 class="subtitle is-5">{{seniorDiscount.toFixed(2)}}</h5>
+          </div>
+          <div class="field">
+            <label for="" class="label">Total</label>
+            <h5 class="subtitle is-5">{{totalAmount}}</h5>
+          </div>
+        </form>
+      </div>
+      <div class="column">
+        <div class="subtitle">Configuration</div>
+        <form>
+          <div class="field">
+            <label for="" class="label">VAT (%)</label>
+            <div class="control">
+              <input type="number" name="" id="" class="input has-text-right" v-model="vat" min="0" max="100">
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Discount (%)</div>
+            <div class="control"><input type="number" name="" id="" class="input has-text-right" v-model="discountRate" min="0" max="100"></div>
+          </div>        
+        </form>
+      </div>
+    </div>  
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+  <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          totalSale: 1000,
+          vat: 12,
+          discountRate: 20,
+          noOfSenior: 0,
+          noOfPax: 1
+        }),
+        computed: {
+          vatRate: function() { return 1 / (this.vat / 100 + 1) },
+          vatSale: function() { return (this.totalSale * this.vatRate * (this.noOfPax - this.noOfSenior) / this.noOfPax) },
+          vatAmount: function() { return (this.totalSale * (1 - this.vatRate) * (this.noOfPax - this.noOfSenior)) / this.noOfPax },
+          vatExemptSale: function() { return (this.vatRate * this.totalSale * this.noOfSenior / this.noOfPax) },
+          seniorDiscount: function() { return (this.vatExemptSale * (this.discountRate / 100)) },
+          totalAmount: function() { return (this.vatSale + this.vatExemptSale + this.vatAmount - this.seniorDiscount).toFixed(2) }
+        }
+      });
+  </script>
+</body>
+</html>
